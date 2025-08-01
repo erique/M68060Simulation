@@ -177,6 +177,26 @@ Program {
 	Depends = { "Musashi", },
 }
 
+---------------------------------------------------------------
+-- M68060 Assembly Analyzer - pairing and cycle cost analysis --
+---------------------------------------------------------------
+
+Program {
+	Name = "M68060AssemblyAnalyzer",
+	Sources = {
+		"M68060AssemblyAnalyzer.c",
+		"M68060InstructionDecoder/M68060DecodeOpIntoUOps.c",
+		"M68060InstructionDecoder/M68060InstructionDecoderTypes.c",
+		"M68060InstructionDecoder/M68060InstructionLengthDecoder.c",
+		"M68060InstructionDecoder/M68060OpWordDecodeInformation.c",
+		"M68060InstructionDecoder/M68060UOp.c",
+		"M68060InstructionDecoder/M68060PairabilityTests.c",
+		"Musashi/StandardMusashiCallbacks.c",
+	},
+	
+	Depends = { "Musashi", },
+}
+
 -------------------------------------------------
 -- Minimal AGU/ALU implementation test program --
 -------------------------------------------------
@@ -295,6 +315,7 @@ Default "TestPairability"
 
 Default "TestOpIntoUOpDecoder"
 Default "CommandLineOpIntoUOpDecoder"
+Default "M68060AssemblyAnalyzer"
 
 Default "TestAguAlu"
 Default "TestIeeAlu"

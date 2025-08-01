@@ -864,7 +864,11 @@ static void decodeOpWord(uint16_t opWord, const OpWordDecodeInfo* opWordDecodeIn
 	ExecutionResource destinationExecutionResource = ExecutionResource_None;
 	DestinationOperandAccessType destinationOperandAccessType;
 	
-	M68060_ASSERT(opWordDecodeInfo->readyForUOpDecoding, "Instruction doesn't support UOp decoding yet");
+	if (!opWordDecodeInfo->readyForUOpDecoding)
+	{
+		M68060_WARNING("Instruction doesn't support UOp decoding yet");
+		return;
+	}
 
 	opWordClassInfo = getOpWordClassInformation(opWordDecodeInfo->class);
 
@@ -1031,6 +1035,6 @@ bool decomposeOpIntoUOps(const uint16_t* instructionWords, uint numInstructionWo
 	
 	*numUOps = UOpWriteBuffer.numUOps;
 	
-	return true;
+	return UOpWriteBuffer.numUOps != 0;
 		
 }
