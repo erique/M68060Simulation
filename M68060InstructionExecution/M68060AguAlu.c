@@ -36,7 +36,7 @@ static uint32_t displacementValueTo32Bit(uint32_t displacementValue, AguDisplace
 	}
 }
 
-static operationSizeToValue(OperationSize operationSize)
+static uint32_t operationSizeToValue(OperationSize operationSize)
 {
 	switch (operationSize)
 	{
@@ -54,7 +54,7 @@ static operationSizeToValue(OperationSize operationSize)
 	}
 }
 
-static operationSizeToValueSP(OperationSize operationSize)
+static uint32_t operationSizeToValueSP(OperationSize operationSize)
 {
 	switch (operationSize)
 	{
