@@ -114,21 +114,21 @@ static OpWordDecodeInfo s_opWordDecodeInformation[] =
 	{ false, 0xf138, 0x0108, "MOVEP Dx <-> d16(An)", OpWordClass_D16An, }, // Shadows BCLR/BCHG Dn,...
 	{ true, 0xf1f8, 0x0140, "BCHG Dn,Dm", OpWordClass_Long_SrcDn_DestEa_DataAlterable_ReadWrite, IeeOperation_BChg, Pairability_pOEP_Only, }, // Shadows BCHG Dn,<ea>
 	{ true, 0xf1c0, 0x0140, "BCHG Dn,<ea>", OpWordClass_Byte_SrcDn_DestEa_DataAlterable_ReadWrite, IeeOperation_BChg, Pairability_pOEP_Only, },
-	{ true, 0xfff8, 0x0840, "BCHG #imm,Dn", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadWrite, IeeOperation_BChg, Pairability_pOEP_Or_sOEP, }, // Shadows BCHG #imm,<ea>
-	{ true, 0xffc0, 0x0840, "BCHG #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadWrite, IeeOperation_BChg, Pairability_pOEP_Or_sOEP, }, // Shadows BCHG #imm,<ea>
+	{ true, 0xfff8, 0x0840, "BCHG #imm,Dn", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadWrite, IeeOperation_BChg, Pairability_pOEP_Until_Last, }, // Shadows BCHG #imm,<ea>
+	{ true, 0xffc0, 0x0840, "BCHG #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadWrite, IeeOperation_BChg, Pairability_pOEP_Until_Last, }, // Shadows BCHG #imm,<ea>
 	{ true, 0xf1f8, 0x0180, "BCLR Dn,Dm", OpWordClass_Long_SrcDn_DestEa_DataAlterable_ReadWrite, IeeOperation_BClr, Pairability_pOEP_Only, }, // Shadows BCLR Dn,<ea>
 	{ true, 0xf1c0, 0x0180, "BCLR Dn,<ea>", OpWordClass_Byte_SrcDn_DestEa_DataAlterable_ReadWrite, IeeOperation_BClr, Pairability_pOEP_Only, },
-	{ true, 0xfff8, 0x0880, "BCLR #imm,Dn", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadWrite, IeeOperation_BClr, Pairability_pOEP_Or_sOEP, }, // Shadows BCLR #imm,<ea>
-	{ true, 0xffc0, 0x0880, "BCLR #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadWrite, IeeOperation_BClr, Pairability_pOEP_Or_sOEP, }, // Shadows BCLR #imm,<ea>
+	{ true, 0xfff8, 0x0880, "BCLR #imm,Dn", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadWrite, IeeOperation_BClr, Pairability_pOEP_Until_Last, }, // Shadows BCLR #imm,<ea>
+	{ true, 0xffc0, 0x0880, "BCLR #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadWrite, IeeOperation_BClr, Pairability_pOEP_Until_Last, }, // Shadows BCLR #imm,<ea>
 	{ false, 0xfff8, 0x4848, "BKPT #imm", OpWordClass_NoExtraWords, }, // Shadows PEA
 	{ true, 0xf1f8, 0x01c0, "BSET Dn,Dm", OpWordClass_Long_SrcDn_DestEa_DataAlterable_ReadWrite, IeeOperation_BSet, Pairability_pOEP_Only, }, // Shadows BSET Dn,<ea>
 	{ true, 0xf1c0, 0x01c0, "BSET Dn,<ea>", OpWordClass_Byte_SrcDn_DestEa_DataAlterable_ReadWrite, IeeOperation_BSet, Pairability_pOEP_Only, },
-	{ true, 0xfff8, 0x08c0, "BSET #imm,Dm", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadWrite, IeeOperation_BSet, Pairability_pOEP_Or_sOEP, }, // Shadows BSET #imm,<ea>
-	{ true, 0xffc0, 0x08c0, "BSET #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadWrite, IeeOperation_BSet, Pairability_pOEP_Or_sOEP, }, // Shadows BSET #imm,<ea>
+	{ true, 0xfff8, 0x08c0, "BSET #imm,Dm", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadWrite, IeeOperation_BSet, Pairability_pOEP_Until_Last, }, // Shadows BSET #imm,<ea>
+	{ true, 0xffc0, 0x08c0, "BSET #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadWrite, IeeOperation_BSet, Pairability_pOEP_Until_Last, }, // Shadows BSET #imm,<ea>
 	{ true, 0xf1f8, 0x0100, "BTST Dn,Dm", OpWordClass_Long_SrcDn_DestEa_Data_ReadOnly, IeeOperation_BTst, Pairability_pOEP_Only, }, // Shadows BTST Dn,<ea>
 	{ true, 0xf1c0, 0x0100, "BTST Dn,<ea>", OpWordClass_Byte_SrcDn_DestEa_Data_ReadOnly, IeeOperation_BTst, Pairability_pOEP_Only, },
-	{ true, 0xfff8, 0x0800, "BTST #imm,Dn", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadOnly, IeeOperation_BTst, Pairability_pOEP_Or_sOEP, }, // Shadows BTST #imm,<ea>
-	{ true, 0xffc0, 0x0800, "BTST #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadOnly, IeeOperation_BTst, Pairability_pOEP_Or_sOEP, },
+	{ true, 0xfff8, 0x0800, "BTST #imm,Dn", OpWordClass_Long_SrcImmByte_DestEa_DataAlterable_ReadOnly, IeeOperation_BTst, Pairability_pOEP_Until_Last, }, // Shadows BTST #imm,<ea>
+	{ true, 0xffc0, 0x0800, "BTST #imm,<ea>", OpWordClass_Byte_SrcImm_DestEa_DataAlterable_ReadOnly, IeeOperation_BTst, Pairability_pOEP_Until_Last, },
 	{ false, 0xffc0, 0xecc0, "BFCLR <ea>{Do:Dw}", OpWordClass_Bitfield_ReadWriteEa, }, // Shadows ASL/ASR/LSL/LSR/ROL/ROR/ROXL/ROXR #imm/Dm,Dn
 	{ false, 0xffc0, 0xebc0, "BFEXTS <ea>{Do:Dw},Dn", OpWordClass_Bitfield_ReadEa, }, // Shadows ASL/ASR/LSL/LSR/ROL/ROR/ROXL/ROXR #imm/Dm,Dn
 	{ false, 0xffc0, 0xe9c0, "BFEXTU <ea>{Do:Dw},Dn", OpWordClass_Bitfield_ReadEa, }, // Shadows ASL/ASR/LSL/LSR/ROL/ROR/ROXL/ROXR #imm/Dm,Dn

@@ -70,6 +70,7 @@ const char* PairabilityToString(Pairability pairability)
 		"pOEP_Or_sOEP",
 		"pOEP_But_Allows_sOEP",
 		"pOEP_Only",
+		"pOEP_Until_Last"
 	};
 
 	M68060_ASSERT((size_t) pairability < (sizeof pairabilityStrings / sizeof pairabilityStrings[0]), "Invalid pairability");
