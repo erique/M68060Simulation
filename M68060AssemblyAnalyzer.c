@@ -86,13 +86,7 @@ bool analyzeInstruction(InstructionAnalysis* analysis)
 
 const char* getPairabilityString(Pairability pairability)
 {
-	switch (pairability)
-	{
-		case Pairability_pOEP_Or_sOEP: return "pOEP+sOEP";
-		case Pairability_pOEP_But_Allows_sOEP: return "pOEP(allows sOEP)";
-		case Pairability_pOEP_Only: return "pOEP-only";
-		default: return "unknown";
-	}
+    return PairabilityToString(pairability);
 }
 
 void printInstructionAnalysis(const InstructionAnalysis* analysis, int index)
@@ -112,6 +106,13 @@ void printInstructionAnalysis(const InstructionAnalysis* analysis, int index)
 		analysis->disassembly,
 		analysis->numUOps,
 		analysis->numUOps > 0 ? getPairabilityString(analysis->UOps[analysis->numUOps-1].pairability) : "invalid");
+		
+	// for (uint i = 0; i < analysis->numUOps; i++)
+	// {
+	// 	const UOp* uop = &analysis->UOps[i];
+	// 	printf("    UOp[%d]: ieeA=%d, ieeB=%d, ieeResult=%d, aguResult=%d, op=%d\n",
+	// 		i, uop->ieeA, uop->ieeB, uop->ieeResult, uop->aguResult, uop->ieeOperation);
+	// }
 }
 
 void printPairingAnalysis(const InstructionAnalysis* instructions, int numInstructions)
@@ -129,9 +130,11 @@ void printPairingAnalysis(const InstructionAnalysis* instructions, int numInstru
 		const UOp* firstUOp = &instructions[i].UOps[instructions[i].numUOps - 1];
 		const UOp* secondUOp = &instructions[i+1].UOps[0];
 
-		PairabilityTestResult result = checkPairability((UOp*)firstUOp, (UOp*)secondUOp);
-
 		printf("  Pair %d-%d: ", i + 1, i + 2);
+		// printf("UOp0[ieeResult=%d] vs UOp1[ieeA=%d, ieeB=%d] - ", 
+		// 	firstUOp->ieeResult, secondUOp->ieeA, secondUOp->ieeB);
+
+		PairabilityTestResult result = checkPairability((UOp*)firstUOp, (UOp*)secondUOp);
 
 		if (result == PairabilityTestResult_Success)
 		{
