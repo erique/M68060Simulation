@@ -95,6 +95,10 @@ int main(void)
 			{ "or.l D1,D2",				1, { 0x8081, }, },			// pOEP|sOEP
 			PairabilityTestResult_Success },
 
+		{	{ "cmpm.b (A0)+,(A1)+",		1, { 0xb308, }, },	// pOEP-until-last
+			{ "tst.w d0",				1, { 0x4a40, }, },	// pOEP|sOEP
+			PairabilityTestResult_Success },
+
 		// these are exceptions to Test6, but is not yet handled by the UOp decoder/Pairability test
 		{	{ "moveq #$0,D0",			1, { 0x7000, }, },	// pOEP|sOEP
 			{ "add.l D0,D1",			1, { 0xd280, }, },	// pOEP|sOEP	<- register dependency
@@ -137,11 +141,13 @@ int main(void)
 			op1HasMultipleUOps = (numUOps1 > 1);
 		}
 
-		if (op0HasMultipleUOps || op1HasMultipleUOps)
+		bool op0AllowsOEP = UOps0[numUOps0-1].pairability == Pairability_pOEP_But_Allows_sOEP;
+
+		if (op0HasMultipleUOps && !op0AllowsOEP || op1HasMultipleUOps)
 			success = false;
 		
 		if (success)
-			pairabilityTestResult = checkPairability(&UOps0[0], &UOps1[0]);
+			pairabilityTestResult = checkPairability(&UOps0[numUOps0-1], &UOps1[0]);
 			
 		if (pairabilityTestResult != test->expectedResult)
 			success = false;

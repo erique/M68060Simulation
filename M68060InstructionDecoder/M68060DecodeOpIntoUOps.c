@@ -919,7 +919,7 @@ static void decodeOpWord(uint16_t opWord, const OpWordDecodeInfo* opWordDecodeIn
 	mainUOp.opWord = opWord;
 	
 	mainUOp.description = opWordDecodeInfo->description;
-	mainUOp.pairability = opWordDecodeInfo->pairability;
+	mainUOp.pairability = opWordDecodeInfo->pairability == Pairability_pOEP_Until_Last ? Pairability_pOEP_But_Allows_sOEP : opWordDecodeInfo->pairability;
 
 	writeUOp(UOpWriteBuffer, &mainUOp);
 }

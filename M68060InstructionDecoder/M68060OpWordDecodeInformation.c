@@ -158,7 +158,7 @@ static OpWordDecodeInfo s_opWordDecodeInformation[] =
 	{ true, 0xffc0, 0x42c0, "MOVE CCR,<ea>", OpWordClass_Word_SrcCCR_DestEa_DataAlterable_WriteOnly_If_WholeOperand, IeeOperation_MoveFromCcr, Pairability_pOEP_Or_sOEP, }, // Shadows CLR
 
 	{ true, 0xff00, 0x4200, "CLR <ea>", OpWordClass_EncodedSize_DestEa_WriteOnly_If_WholeOperand, IeeOperation_Clr, Pairability_pOEP_Or_sOEP, },
-	{ true, 0xf138, 0xb108, "CMPM (Ax)+,(Ay)+", OpWordClass_EncodedSize_SrcAnPostIncrement_DestAnPostIncrementReadOnly, IeeOperation_Cmp, Pairability_pOEP_Only, }, // Shadows EOR
+	{ true, 0xf138, 0xb108, "CMPM (Ax)+,(Ay)+", OpWordClass_EncodedSize_SrcAnPostIncrement_DestAnPostIncrementReadOnly, IeeOperation_Cmp, Pairability_pOEP_Until_Last, }, // Shadows EOR
 
 	{ true, 0xf1c0, 0xb100, "EOR.B Dn,<ea>", OpWordClass_EncodedSize_Rn_Ea_2, IeeOperation_Eor, Pairability_pOEP_Or_sOEP, }, // Shadows CMP
 	{ true, 0xf1c0, 0xb140, "EOR.W Dn,<ea>", OpWordClass_EncodedSize_Rn_Ea_2, IeeOperation_Eor, Pairability_pOEP_Or_sOEP, }, // Shadows CMP
