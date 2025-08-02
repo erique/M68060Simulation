@@ -1,6 +1,7 @@
 #include "M68060InstructionDecoder/M68060DecodeOpIntoUOps.h"
 #include "M68060InstructionDecoder/M68060PairabilityTests.h"
 #include "M68060InstructionDecoder/M68060InstructionLengthDecoder.h"
+#include "M68060InstructionDecoder/M68060OpWordDecodeInformation.h"
 #include "Musashi/m68kcpu.h"
 #include "Types.h"
 
@@ -100,12 +101,14 @@ void printInstructionAnalysis(const InstructionAnalysis* analysis, int index)
 		strcat(hexStr, temp);
 	}
 
+    const OpWordDecodeInfo* opWordDecodeInfo = getOpWordDecodeInformation(analysis->instructionWords[0]);
+
 	printf("  %2d: %-24s %-30s [UOps: %d, %s]\n", 
 		index + 1,
 		hexStr,
 		analysis->disassembly,
 		analysis->numUOps,
-		analysis->numUOps > 0 ? getPairabilityString(analysis->UOps[analysis->numUOps-1].pairability) : "invalid");
+		PairabilityToString(opWordDecodeInfo->pairability));
 		
 	// for (uint i = 0; i < analysis->numUOps; i++)
 	// {
