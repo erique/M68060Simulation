@@ -82,6 +82,17 @@ int main(void)
 		{	{ "ADD.B (A0)+,D0",			1, { 0xd018, }, },	// pOEP|sOEP
 			{ "ADDA.W D1,A0",			1, { 0xd0c1, }, },	// pOEP|sOEP	<- register dependency
 			PairabilityTestResult_Test6Failure_SecondInstructionIeeBRegisterDependsOnFirstInstructionAguResult },
+
+		// these are exceptions to Test6, but is not yet handled by the UOp decoder/Pairability test
+		{	{ "moveq #$0,D0",			1, { 0x7000, }, },	// pOEP|sOEP
+			{ "add.l D0,D1",			1, { 0xd280, }, },	// pOEP|sOEP	<- register dependency
+			PairabilityTestResult_Test6Failure_SecondInstructionIeeARegisterDependsOnFirstInstructionIeeResult },
+		{	{ "moveq #$2,D0",			1, { 0x7002, }, },	// pOEP|sOEP
+			{ "rol.l D0,D1",			1, { 0xe1b9, }, },	// pOEP|sOEP	<- register dependency
+			PairabilityTestResult_Test6Failure_SecondInstructionIeeARegisterDependsOnFirstInstructionIeeResult },
+		{	{ "not.l D0",				1, { 0x4680, }, },			// pOEP|sOEP
+			{ "move.l d0,$0.w",			2, { 0x21c0, 0x0000, }, },	// pOEP|sOEP	<- register dependency
+			PairabilityTestResult_Test6Failure_SecondInstructionIeeARegisterDependsOnFirstInstructionIeeResult },
 	};
 	
 	uint i;

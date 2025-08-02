@@ -7,7 +7,7 @@
 static OpWordClassInfo s_opWordClassInformation[] =
 {
 	{ 0, SizeEncoding_None, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, }, // OpWordClass_NoExtraWords
-	{ 0, SizeEncoding_Long, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, DecodeOperand_ImmOpWord8Bit, DecodeOperand_DefaultDnLocation, DestinationOperandAccessType_WriteOnly_If_WholeOperand, }, // OpWordClass_Long_SrcImm8Bit_DestDn
+	{ 0, SizeEncoding_Long, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, DecodeOperand_ImmOpWord8Bit, DecodeOperand_SecondaryDnLocation, DestinationOperandAccessType_WriteOnly_If_WholeOperand, }, // OpWordClass_Long_SrcImm8Bit_DestDn
 	{ 0, SizeEncoding_Byte, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, DecodeOperand_None, DecodeOperand_DefaultDnLocation, DestinationOperandAccessType_ReadWrite, }, // OpWordClass_Byte_DestDnReadWrite
 	{ 0, SizeEncoding_Word, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, DecodeOperand_None, DecodeOperand_DefaultDnLocation, DestinationOperandAccessType_ReadWrite, }, // OpWordClass_Word_DestDnReadWrite
 	{ 0, SizeEncoding_Long, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, DecodeOperand_None, DecodeOperand_DefaultDnLocation, DestinationOperandAccessType_ReadWrite, }, // OpWordClass_Long_DestDnReadWrite
