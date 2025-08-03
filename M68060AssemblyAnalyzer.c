@@ -101,14 +101,17 @@ void printInstructionAnalysis(const InstructionAnalysis* analysis, int index)
 		strcat(hexStr, temp);
 	}
 
+	Pairability pairability = analysis->UOps[analysis->numUOps-1].pairability;
     const OpWordDecodeInfo* opWordDecodeInfo = getOpWordDecodeInformation(analysis->instructionWords[0]);
+	if (opWordDecodeInfo)
+		pairability = opWordDecodeInfo->pairability;
 
 	printf("  %2d: %-24s %-30s [UOps: %d, %s]\n", 
 		index + 1,
 		hexStr,
 		analysis->disassembly,
 		analysis->numUOps,
-		PairabilityToString(opWordDecodeInfo->pairability));
+		PairabilityToString(pairability));
 		
 	// for (uint i = 0; i < analysis->numUOps; i++)
 	// {
