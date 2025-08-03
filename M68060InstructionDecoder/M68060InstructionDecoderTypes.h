@@ -157,6 +157,7 @@ typedef enum
 	IeeOperation_Scc,
 	IeeOperation_Swap,
 	IeeOperation_Bcc,
+	IeeOperation_Rts,
 
 } IeeOperation;
 

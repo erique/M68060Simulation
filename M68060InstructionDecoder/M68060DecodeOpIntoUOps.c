@@ -921,6 +921,77 @@ static void decodeOpWord(uint16_t opWord, const OpWordDecodeInfo* opWordDecodeIn
 	mainUOp.description = opWordDecodeInfo->description;
 	mainUOp.pairability = opWordDecodeInfo->pairability == Pairability_pOEP_Until_Last ? Pairability_pOEP_But_Allows_sOEP : opWordDecodeInfo->pairability;
 
+	if (opWordDecodeInfo->class == OpWordClass_Movem_RegistersToMemory || 
+		opWordDecodeInfo->class == OpWordClass_Movem_MemoryToRegisters)
+	{
+		uint16_t registerMask = instructionWords[1];
+		bool isWordSize = !(opWord & 0x0040); // Bit 6: 0 = word, 1 = long
+		OperationSize operationSize = isWordSize ? OperationSize_Word : OperationSize_Long;
+		bool isRegisterToMemory = (opWordDecodeInfo->class == OpWordClass_Movem_RegistersToMemory);
+		bool isPreDecrement = mainUOp.aguOperation == AguOperation_PreDecrement;
+		
+		for (int regNum = 0; regNum < 16; regNum++)
+		{
+			if (!(registerMask & (1 << regNum)))
+				continue;
+
+			UOp regUOp = mainUOp; // Copy base UOp (has AGU setup for addressing mode)
+			
+			ExecutionResource reg;
+			if (isPreDecrement)
+			{
+				// For predecrement mapping: 15-8=D0-D7, 7-0=A0-A7
+				if (regNum >= 8)
+					reg = ExecutionResource_D0 + (15 - regNum); // bit 15->D0, 14->D1, ..., 8->D7
+				else
+					reg = ExecutionResource_A0 + (7 - regNum); // bit 7->A0, 6->A1, ..., 0->A7
+			}
+			else
+			{
+				// For control/postincrement: bits 7-0 = D0-D7, bits 15-8 = A0-A7
+				if (regNum < 8)
+					reg = ExecutionResource_D0 + regNum; // bits 7-0 -> D0-D7
+				else
+					reg = ExecutionResource_A0 + (regNum - 8); // bits 15-8 -> A0-A7
+			}
+
+			if (isRegisterToMemory)
+			{
+				// Set up IEE to move register to memory
+				regUOp.ieeA = reg;
+				regUOp.ieeOperation = IeeOperation_Move;
+				regUOp.ieeOperationSize = operationSize;
+				regUOp.ieeResult = ExecutionResource_MemoryOperand;
+				regUOp.memoryWrite = true;
+			}
+			else
+			{			
+				// Set up IEE to move memory to register
+				regUOp.ieeA = ExecutionResource_MemoryOperand;
+				regUOp.ieeOperation = IeeOperation_Move;
+				regUOp.ieeOperationSize = operationSize;
+				regUOp.ieeResult = reg;
+				regUOp.memoryRead = true;
+			}
+			
+			regUOp.pairability = Pairability_pOEP_Only;
+			writeUOp(UOpWriteBuffer, &regUOp);
+		}
+		return;
+	}
+
+	if (opWordDecodeInfo->ieeOperation == IeeOperation_Rts)
+	{
+		mainUOp.aguBase = ExecutionResource_A7;
+		mainUOp.aguOperation = AguOperation_PostIncrement;
+		mainUOp.aguResult = ExecutionResource_A7;
+		mainUOp.memoryRead = true;
+		mainUOp.ieeA = ExecutionResource_MemoryOperand;
+		mainUOp.ieeOperationSize = OperationSize_Long;
+		mainUOp.ieeOperation = IeeOperation_MoveA;
+		mainUOp.ieeResult = ExecutionResource_PC;
+	}
+
 	writeUOp(UOpWriteBuffer, &mainUOp);
 }
 

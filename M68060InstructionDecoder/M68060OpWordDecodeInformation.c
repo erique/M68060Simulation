@@ -59,8 +59,8 @@ static OpWordClassInfo s_opWordClassInformation[] =
 	{ 0, SizeEncoding_Word, EAEncoding_D16, EAModeMask_All, EAEncoding_None, EAModeMask_None, }, // OpWordClass_D16An
 	{ 1, SizeEncoding_None, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, }, // OpWordClass_1SpecialWord
 	{ 2, SizeEncoding_None, EAEncoding_None, EAModeMask_None, EAEncoding_None, EAModeMask_None, }, // OpWordClass_2SpecialWords
-	{ 1, SizeEncoding_None, EAEncoding_None, EAModeMask_None, EAEncoding_DefaultEALocation, EAModeMask_ControlAlterable | (1U << EAMode_Mem_PreDecrement_An), }, // OpWordClass_Movem_RegistersToMemory
-	{ 1, SizeEncoding_None, EAEncoding_DefaultEALocation, EAModeMask_Control | (1U << EAMode_Mem_An_PostIncrement), EAEncoding_None, EAModeMask_None, }, // OpWordClass_Movem_MemoryToRegisters
+	{ 1, SizeEncoding_None, EAEncoding_None, EAModeMask_None, EAEncoding_DefaultEALocation, EAModeMask_ControlAlterable | (1U << EAMode_Mem_PreDecrement_An), DecodeOperand_None, DecodeOperand_DefaultEALocation, }, // OpWordClass_Movem_RegistersToMemory
+	{ 1, SizeEncoding_None, EAEncoding_DefaultEALocation, EAModeMask_Control | (1U << EAMode_Mem_An_PostIncrement), EAEncoding_None, EAModeMask_None, DecodeOperand_DefaultEALocation, DecodeOperand_None, }, // OpWordClass_Movem_MemoryToRegisters
 	{ 1, SizeEncoding_None, EAEncoding_None, EAModeMask_None, EAEncoding_DefaultEALocation, (1U << EAMode_Dn) | EAModeMask_ControlAlterable, }, // OpWordClass_Bitfield_ReadWriteEa
 };
 
@@ -195,8 +195,8 @@ static OpWordDecodeInfo s_opWordDecodeInformation[] =
 	{ false, 0xfff8, 0xf620, "MOVE16 (Ax)+,(Ay)+", OpWordClass_1SpecialWord, },
 	{ false, 0xffe0, 0xf600, "MOVE16 (An <-> xxx.L)", OpWordClass_2SpecialWords, },
 
-	{ false, 0xff80, 0x4880, "MOVEM reglist,<ea>", OpWordClass_Movem_RegistersToMemory, },
-	{ false, 0xff80, 0x4c80, "MOVEM <ea>,reglist", OpWordClass_Movem_MemoryToRegisters, },
+	{ true, 0xff80, 0x4880, "MOVEM reglist,<ea>", OpWordClass_Movem_RegistersToMemory, IeeOperation_Move, Pairability_pOEP_Only, },
+	{ true, 0xff80, 0x4c80, "MOVEM <ea>,reglist", OpWordClass_Movem_MemoryToRegisters, IeeOperation_Move, Pairability_pOEP_Only, },
 
 	{ true, 0xf100, 0x7000, "MOVEQ #imm,Dn", OpWordClass_Long_SrcImm8Bit_DestDn, IeeOperation_Move, Pairability_pOEP_Or_sOEP, },
 
@@ -231,7 +231,7 @@ static OpWordDecodeInfo s_opWordDecodeInformation[] =
 
 	{ false, 0xffff, 0x4e74, "RTD #imm", OpWordClass_ImmediateWord, },
 	{ false, 0xffff, 0x4e77, "RTR", OpWordClass_NoExtraWords, },
-	{ false, 0xffff, 0x4e75, "RTS", OpWordClass_NoExtraWords, },
+	{ true, 0xffff, 0x4e75, "RTS", OpWordClass_NoExtraWords, IeeOperation_Rts, Pairability_pOEP_Only, },
 
 	{ true, 0xf138, 0x9100, "SUBX Dx,Dy", OpWordClass_EncodedSize_SrcDn_DestDn, IeeOperation_SubX, Pairability_pOEP_Only, }, // Shadows SUB Dn,<ea>
 	{ true, 0xf138, 0x9108, "SUBX -(Ax),-(Ay)", OpWordClass_EncodedSize_SrcAnPreDecrement_DestAnPreDecrement, IeeOperation_SubX, Pairability_pOEP_Only, }, // Shadows SUB Dn,<ea>
