@@ -99,16 +99,15 @@ int main(void)
 			{ "tst.w d0",				1, { 0x4a40, }, },	// pOEP|sOEP
 			PairabilityTestResult_Success },
 
-		// these are exceptions to Test6, but is not yet handled by the UOp decoder/Pairability test
 		{	{ "moveq #$0,D0",			1, { 0x7000, }, },	// pOEP|sOEP
-			{ "add.l D0,D1",			1, { 0xd280, }, },	// pOEP|sOEP	<- register dependency
-			PairabilityTestResult_Test6Failure_SecondInstructionIeeARegisterDependsOnFirstInstructionIeeResult },
+			{ "add.l D0,D1",			1, { 0xd280, }, },	// pOEP|sOEP	<- register dependency exception
+			PairabilityTestResult_Success },
 		{	{ "moveq #$2,D0",			1, { 0x7002, }, },	// pOEP|sOEP
-			{ "rol.l D0,D1",			1, { 0xe1b9, }, },	// pOEP|sOEP	<- register dependency
-			PairabilityTestResult_Test6Failure_SecondInstructionIeeARegisterDependsOnFirstInstructionIeeResult },
+			{ "rol.l D0,D1",			1, { 0xe1b9, }, },	// pOEP|sOEP	<- register dependency exception
+			PairabilityTestResult_Success },
 		{	{ "not.l D0",				1, { 0x4680, }, },			// pOEP|sOEP
-			{ "move.l d0,$0.w",			2, { 0x21c0, 0x0000, }, },	// pOEP|sOEP	<- register dependency
-			PairabilityTestResult_Test6Failure_SecondInstructionIeeARegisterDependsOnFirstInstructionIeeResult },
+			{ "move.l d0,$0.w",			2, { 0x21c0, 0x0000, }, },	// pOEP|sOEP	<- register dependency exception
+			PairabilityTestResult_Success },
 	};
 	
 	uint i;

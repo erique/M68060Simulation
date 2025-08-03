@@ -80,6 +80,39 @@ PairabilityTestResult checkPairability_Test5_RegisterConflictsOnAguResources(UOp
 
 PairabilityTestResult checkPairability_Test6_RegisterConflictsOnIeeResources(UOp* UOp0, UOp* UOp1)
 {
+/*
+	Test6 Exceptions:
+
+	1. If the primary OEP instruction is a simple “move long to register” (MOVE.L,Rx) and
+	the destination register Rx is required as either the sOEP.A or sOEP.B input, the
+	MC68060 bypasses the data as required and the test succeeds.
+
+	2. In the following sequence of instructions:
+		<op>.l,Dx
+		mov.l Dx,<mem>
+	the result of the pOEP instruction is needed as an input to the sOEP.IEE and the sOEP
+	instruction is a move instruction. The destination operand for the memory write is sourced
+	directly from the pOEP execute result and the test succeeds.
+*/
+	bool exception1 =
+		(UOp0->ieeOperation == IeeOperation_Move) &&
+		(UOp0->ieeOperationSize == OperationSize_Long) &&
+		(
+			isRegister(UOp1->ieeA) && UOp1->ieeA == UOp0->ieeResult ||
+			isRegister(UOp1->ieeB) && UOp1->ieeB == UOp0->ieeResult
+		);
+
+	bool exception2 =
+		(UOp0->ieeOperationSize == OperationSize_Long) &&
+		(UOp1->ieeOperation == IeeOperation_Move) &&
+		(UOp1->ieeOperationSize == OperationSize_Long) &&
+		(UOp1->ieeResult == ExecutionResource_MemoryOperand) &&
+		(ExecutionResource_D0 <= UOp1->ieeA && UOp1->ieeA <= ExecutionResource_D7) &&
+		(UOp1->ieeA == UOp0->ieeResult);
+
+	if (exception1 || exception2)
+		return PairabilityTestResult_Success;
+
 	if (isRegister(UOp1->ieeA))
 	{
 		if (UOp1->ieeA == UOp0->aguResult)
@@ -95,10 +128,6 @@ PairabilityTestResult checkPairability_Test6_RegisterConflictsOnIeeResources(UOp
 			return PairabilityTestResult_Test6Failure_SecondInstructionIeeBRegisterDependsOnFirstInstructionIeeResult;
 	}
 
-	// TODO: There are some exceptions with regard to MOVE.L operations, that can make instructions pair.
-	// These exceptions should either be handled outside of the pairability tests - by rewriting the first/second instruction
-	//  such that the pairing tests automatically succeed - or by adding extra logic to this pairability test.
-	
 	return PairabilityTestResult_Success;
 }
 
